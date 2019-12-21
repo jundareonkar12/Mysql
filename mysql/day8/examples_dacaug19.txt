@@ -1,0 +1,137 @@
+$gt $lt $gte $lte,$in,$nin,$exists,$in:[null],
+$mod,$type,$size,$elemMatch
+
+
+-------list all documents with rating < 4
+{rating:{$lt:4}}
+
+db.movie.find({rating:{$lt:4}})
+
+-------list all documents with rating < 4 and price>250 a
+arrange it on name and disply only 3 and 4 document
+{price:{$gt:250}}
+{rating:{$lt:4}}
+db.movie.find({price:{$gt:250},rating:{$lt:4}}).sort({name:1}).limit(2).skip(2);
+
+--------list all documents with ticket_no>100 and price=300
+ticket_no:{$gt:100}
+price:300
+db.movie.find({ticket_no:{$gt:100},price:300})
+
+-----list all movies with name kahani
+db.movie.find({name:'kahani'})
+-----list all movies in which Amitabh has acted
+db.movie.find({actor:'Amitabh'})
+-------list all inwhich Amitabh is at 1 st position
+db.movie.find({'actor.0':'Amitabh'})
+------list all friend having type of contact as 
+mobile at 0 th position
+db.friends.find({'contact.0.type':'mobile'})
+
+-------list all documents with ticket_no>100 or price=300
+{ticket_no:{$gt:100}}
+{price:300}
+db.movie.find({$or:[{ticket_no:{$gt:100}},{price:300}]})
+
+-------list all documents with (ticket_no>100 and rating 2) 
+or price=300
+{ticket_no:{$gt:100}}
+{rating:2}
+{$and:[{ticket_no:{$gt:100}},{rating:2}]}
+
+{price:300}
+{$or:[{price:300},{$and:[{ticket_no:{$gt:100}},{rating:2}]}]}
+
+-------list all movies with rating either =2 or =3 or =4
+
+db.movie.find({rating:{$in:[2,3,4]}})
+
+
+--------list all movies with rating >2 and <=4
+{rating:{$gt:2,$lte:4}}
+db.movie.find({rating:{$gt:2,$lte:4}})
+
+--------list all movies with rating null
+db.movie.find({rating:{$in:[null]}})
+
+------list all movies with price divisible by 3
+
+{price:{{$mod:[3,0]}}}
+
+{$not:[{price:{{$mod:[3,0]}}}]}
+
+db.movie.find({price:{$mod:[3,0]}})
+{price:{$mod:[4,0]}
+{price:{$mod:[5,0]}
+------list all movies with size of actor array =3
+
+db.movie.find({actor:{$size:3}})
+
+
+------list all friends with address = null
+
+db.friends.find({address:{$in:[null]}});
+
+------list all movies with price is equal to either 200 
+or 300 or 270
+
+db.movie.find({price:{$in:[200,300,270]}},{name:1,price:1,_id:0})
+
+----list all movies with name starts with A
+
+db.movie.find({name:/^A/)
+
+---list all the movies with name starts with vowel 
+and ends with consonent
+db.movie.find({name:/^[aeiouAEIOU].*[^aeiouAEIOU]$/})
+
+
+> db.movie.update(
+{name:/^ne/},
+{
+$set:{price:330},
+$currentDate:{lastmodified:true}
+},
+{multi:true}
+
+);
+
+
+------- increase ticket_no by 10 for all movies 
+with price > 200
+
+db.movie.update({price:{$gt:200}},{$inc:{ticket_no:10}},{multi:true})
+-----change value of rating to 7 for all movies with name
+starts with p, a somewhere in between and ends with t
+
+db.movie.update({name:/^[pP].*a.*t$/},{$set:{rating:7}},{multi:true})
+
+------add new actor 'zzz' in movie chichore at 
+3rd position
+
+db.movie.update({name:'chichore'},{$push:{actor:{$each:['zzz'],$position:3}}},{})
+
+-------delete the value $pop   
+db.movie.update({name:/^ne/},{$pop:{actor:1}})
+
+
+db.movie.update({name:/^chich/,actor:'yash'},
+{$set:{'actor.$':'zzz'}},{multi:true});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

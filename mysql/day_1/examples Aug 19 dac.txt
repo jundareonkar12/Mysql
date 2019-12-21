@@ -1,0 +1,147 @@
+-------list all employees whose sal > 1600 and < 3000
+select *
+from emp
+where sal> 1600 and sal <3000;
+
+
+between and
+
+select *
+from emp
+where sal between 1601 and 2999;
+
+-----list all employee with sal  not greater than or equal to 1600
+and less than or equal to 3000
+select *
+from emp
+where sal not between 1600 and 3000;
+
+
+-----list all employees with salary  either 1600 or 2500 or 2100
+
+select * 
+from emp
+where sal=1600 or sal=2500 or sal=2100;
+
+in operator
+
+select * 
+from emp
+where sal in (1600,2500,2100);
+
+
+-----list all employees who are working as MANAGER or CLERK
+or ANALYST
+select * 
+from emp
+where job in ('MANAGER','CLERK','ANALYST');
+
+------list all employees with name starts with M
+select *
+from emp
+where ename like 'M%';
+
+% - 0  or more characters
+_ - matches with one character
+
+------list all employees whose name contains  M somewhere in the name
+
+select *
+from emp
+where ename like '%M%';
+
+------list all employees whose name contains  M at second position
+
+select *
+from emp
+where ename like '_M%';
+
+----list all employees whose name contains  M at second last 
+position
+select *
+from emp
+where ename like '%M_';
+
+----list all employees whose name starts with M or A or k 
+select *
+from emp
+where ename not like 'M%' or ename like'A%' or ename like'K%'
+
+select *
+from emp
+where ename REGEXP '^M|^A|^K'
+
+
+REGEXP
+^ --- starts with
+$ --- ends with
+. ---- matches any one character
+[] --- matches one character from the given set  
+* ----- 0 or more occurances
++ ------ 1 or more occurances
+? ----- 0 or 1 occurrances
+
+A%
+
+'^A'
+A
+A1
+A!
+Ajashhjfhsjfhjsh
+CAnsdskjdsjk
+
+'A$'
+A
+kjhfhsA
+1A
+jahsdjh
+
+'^..A$'
+
+asdjahsjhajdhA
+asA
+^A[aeiou]..B$
+
+AesdB
+
+^ac?.D$
+
+abD
+acfD
+
+(^a..S$|^B.S|^RB.+)
+
+select *
+from emp
+where ename REGEXP '^A..B$'
+
+^A[^aeiou].F$
+
+[^A-Za-z0-9]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

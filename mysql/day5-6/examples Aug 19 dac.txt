@@ -1,0 +1,915 @@
+-------list all employees whose sal > 1600 and < 3000
+select *
+from emp
+where sal> 1600 and sal <3000;
+
+
+between and
+
+select *
+from emp
+where sal between 1601 and 2999;
+
+-----list all employee with sal  not greater than or equal to 1600
+and less than or equal to 3000
+select *
+from emp
+where sal not between 1600 and 3000;
+
+
+-----list all employees with salary  either 1600 or 2500 or 2100
+
+select * 
+from emp
+where sal=1600 or sal=2500 or sal=2100;
+
+in operator
+
+select * 
+from emp
+where sal in (1600,2500,2100);
+
+
+-----list all employees who are working as MANAGER or CLERK
+or ANALYST
+select * 
+from emp
+where job in ('MANAGER','CLERK','ANALYST');
+
+------list all employees with name starts with M
+select *
+from emp
+where ename like 'M%';
+
+% - 0  or more characters
+_ - matches with one character
+
+------list all employees whose name contains  M somewhere in the name
+
+select *
+from emp
+where ename like '%M%';
+
+------list all employees whose name contains  M at second position
+
+select *
+from emp
+where ename like '_M%';
+
+----list all employees whose name contains  M at second last 
+position
+select *
+from emp
+where ename like '%M_';
+
+----list all employees whose name starts with M or A or k 
+select *
+from emp
+where ename not like 'M%' or ename like'A%' or ename like'K%'
+
+select *
+from emp
+where ename REGEXP '^M|^A|^K'
+
+
+REGEXP
+^ --- starts with
+$ --- ends with
+. ---- matches any one character
+[] --- matches one character from the given set  
+* ----- 0 or more occurances
++ ------ 1 or more occurances
+? ----- 0 or 1 occurrances
+
+A%
+
+'^A'
+A
+A1
+A!
+Ajashhjfhsjfhjsh
+CAnsdskjdsjk
+
+'A$'
+A
+kjhfhsA
+1A
+jahsdjh
+
+'^..A$'
+
+asdjahsjhajdhA
+asA
+^A[aeiou]..B$
+
+AesdB
+
+^ac?.D$
+
+abD
+acfD
+
+(^a..S$|^B.S|^RB.+)
+
+select *
+from emp
+where ename REGEXP '^A..B$'
+
+^A[^aeiou].F$
+
+[^A-Za-z0-9]
+
+
+------ list all employees in sorted order of sal who works as Manager
+
+select *
+from emp
+where job='MANAGER'
+order by sal;
+
+
+-------------------
+----- list all employees with name "jones' and salry >1500   100000 20000  5 
+select *
+from emp
+where ename='JONES' and sal>1500;
+
+select *
+from emp
+where sal>1500 and ename='JONES'
+
+-----find sum of sal for all managers in for each department
+
+select deptno,sum(sal)
+from emp
+where job='MANAGER'
+group by deptno;
+
+--------find sum of sal for all employees with sal equal to 1600,2500,2100
+
+select sum(sal)
+from emp
+where sal in (1600,2500,2100);
+
+
+-------find avg of sal for each department for each job
+
+select deptno,job,avg(sal)
+from emp
+group by deptno,job;
+
+
+select deptno,count(*)
+from emp
+group by deptno
+having count(*)>15;
+
+-----list sum of sal,and count department wise and  jobwise if 
+sum(sal)>15000 and count>3
+
+select deptno,job,sum(sal),count(*)
+from emp
+group by deptno,job
+having sum(sal)>15000 and count(*) >3;
+
+-----list sum of sal, max sal,count for each job for all employees who are in
+department 20 or 30 and they earn commission if count > 5
+select job,sum(sal),max(sal),count(comm)
+from emp
+where deptno in (20,30) and comm is not null
+group by job
+having count(*)>5 
+order by sum(sal)
+
+
+select deptno,count(*)
+from emp
+where deptno=10
+group by deptno;
+
+
+---list sum of sal,min sal,max sal and number of employees 
+  working under same manager with salary >2000
+only if number of employees are < 7
+
+select mgr,sum(sal),min(sal),max(sal),count(*)
+from emp
+where sal>200
+group by mgr
+having count(*)<7;
+
+
+Number functions
+ifnull
+ceil
+floor
+round
+truncate
+abs
+sqrt
+
+string related function
+concat
+INSTR
+lower
+upper
+LPAD
+trim
+insert
+
+date related
+exctract
+datediff
+date_format
+str_to_date
+curdate()
+now()
+
+
+create table -DDL operation
+drop
+truncate
+alter
+
+
+DML --insert 
+update
+delete
+
+
+pid pname qty price
+
+
+primary key
+unique   ----no duplicates but any number of nulls are ok
+foreign key
+not null
+check
+default
+
+123
+
+2 types
+table level ---
+field level ---- not null default 
+
+dept
+deptno primary key----unique ---not null
+dname
+dloc
+
+create table dept(
+deptid int primary key,
+dname varchar(20) not null,
+dloc varchar(10)
+);
+
+
+
+employee
+eid  not null
+ename
+address   default Aundh
+adharnum
+dOJ 
+sal check(sal >5000)  3000
+deptno
+
+create table employee(
+eid int primary key,
+ename varchar(15),
+address varchar(30) default 'Aundh',
+adharnum int unique not null,
+doj date,
+sal decimal(11,2),
+deptno int references dept(deptid)
+)
+
+
+
+insert into dept  values(10,'HR','Mumbai');
+
+
+product
+pid 
+pname
+qty
+cid   ---foreign key
+
+category
+catid
+cname
+
+create table category(
+catid int primary key,
+cname varchar(20)
+)
+
+create table product(
+pid int primary key,
+pname varchar(30),
+qty int check (qty>0),
+cid int,
+FOREIGN KEY fk_cat(cid) 
+REFERENCES category(catid)
+ON UPDATE CASCADE
+ON DELETE set null
+)
+
+student
+sid
+cid
+marks
+
+
+create table student(
+sid int,
+cid int,
+marks int,
+primary key(sid,cid)
+)
+
+Create temporary table mytable(
+Id int primary key auto_increment,
+Name varchar(10),
+Addr varchar(20));
+
+temporary table will be available in only current session
+temporary table name and permanent table name can be same
+
+till temporary table with same name is available till the time 
+permanent table will not be accessible
+
+
+Insert into mytable values(default,’Kishori’,’Aundh’)
+savepoint A
+Insert into mytable(name,addr) values(’Kishori’,’Aundh’)
+savepoint B
+Insert into mytable(name,addr) values(’Kishori’,’Aundh’)
+rollback;
+delete 
+from product;
+commit;
+rollback;
+
+#delete all rows but keep empty table
+#rollback not possible
+truncate table product;
+
+#delete all rows as well as table
+drop table product;
+
+Insert into mytable(name,addr) values(’Kishori’,’Aundh’)
+Insert into mytable(name,addr) values(’Kishori’,’Aundh’)
+Insert into mytable(name,addr) values(’Kishori’,’Aundh’)
+create table mytab(
+
+
+)
+rollback;
+
+DML
+
+insert 
+update
+delete
+
+delete 
+from emp
+where deptno=10;
+
+delete
+from emp
+where sal between 2000 and 4000;
+
+
+update emp
+set sal=sal*1.10
+where sal>2000;
+
+
+update emp
+set sal=1.10*sal,job='Sr.Manager',comm=600
+where deptno in (10,20)
+
+-----change mgr of SMITH to 7299,deptno to 20
+
+update emp
+set mgr=7299,deptno=20
+where ename='SMITH'
+
+-----alter table
+
+for constraint
+add constraint
+drop <name>
+
+
+----for column
+-add column
+---drop column
+----modify
+----change
+
+---for table
+rename
+
+Question 
+Add foolowing constraints on existing table
+emp ----primary key,deptno foreign key 
+dept  -- primary key
+      ----add new column deptdetails --- vrachar(200)
+salgrade
+     ---- grade -----primary key
+
+
+subqueries
+
+------list all employees with salary > Allen's salary
+select sal
+from emp
+where ename='ALLEN'
+
+
+select *
+from emp
+where sal > any (
+	select sal
+	from emp
+	where ename='ALLEN'
+	);
+
+----list all employees with sal > average sal of dept 10
+
+select *
+from emp
+where sal >(
+	select avg(sal)
+	from emp
+	where deptno=10);
+
+
+------list all employees who works in Smith's department
+
+select ename
+from emp
+where deptno in (
+	select deptno
+	from emp
+	where ename='SMITH')
+
+-------list all employees whose salary is > allen's salary
+   2000 and < 
+Blake salary 4000
+
+select *
+from emp
+where sal between (select sal 
+		   from emp
+		   where ename='ALLEN') e  and (select sal 
+		   				from emp
+		   				where ename='BLAKE')
+
+
+
+------update salary of James to 1000 more than smith's salary
+update emp
+set sal=(select sal
+	 from emp
+	where ename='SMITH')+1000
+where ename='James';
+
+
+-----delete all employees who are working under Blake
+delete
+from emp
+where mgr=(select empno
+		from emp
+		where ename='Blake')
+
+
+----- list all employees with salary greater than 
+average salary of smith's department
+select ename
+from emp
+where sal > (
+		select avg(sal)
+		from emp
+		where deptno =(
+				select deptno
+				from emp
+				where ename='SMITH'
+				)
+				)
+
+------list all employees whose job is same as SMITH or BLAKE
+select *
+from emp
+where job in (select job 
+		from emp
+		where ename in ('SMITH','BLAKE'))
+
+----list all employees with sal > average sal 
+of their own department-----co.related query
+select *
+from emp e
+where sal >(select avg(sal)
+		from emp m
+		where m.deptno=e.deptno)
+
+
+
+-------list all employees whose salary < average salary of all 
+employees who are working under same manager of his own
+
+select *
+from emp e
+where sal <(select avg(sal)
+		from emp m
+		where m.mgr=e.mgr)
+
+
+--------Joins
+
+cross join  ---- in query no join condition
+inner join  --- includes one or more join conditions 
+      	equi join
+	nonequi join
+             select ename,sal,grade
+             from emp e,salgrade s
+	     where e.sal between s.losal and s.hisal 
+	self join
+outer join
+	left outer join
+	right outer join
+	full outer join
+
+
+-------
+faculty(fid,fname,skill1,skill2)
+course(cid,cname,numstu,rid,fid)
+room(rid,rname,loc)
+
+
+
+
+
+
+----- list all courses along with faculty and room details
+select cid,cname,fname,rname
+from course c,faculty f,room r
+where c.fid=f.fid and c.rid=r.rid;
+
+select cid,cname,fname,rname
+from course c inner join faculty f on c.fid=f.fid
+inner join room r on c.rid = r.rid
+
+
+-----list all courses along with room allocated to the course
+
+select cid,cname,c.rid,rname
+from course c,room r
+where c.rid=r.rid
+
+
+select cid,cname,c.rid,rname
+from course c inner join room r
+on c.rid=r.rid
+
+------list all courses along with faculty allocated to the course
+select c.cid,c.cname,f.fid,f.fname
+from course c,faculty f
+where c.fid=f.fid
+
+select c.cid,c.cname,f.fid,f.fname
+from course c inner join faculty f
+on c.fid=f.fid
+
+
+
+select e.empno,e.ename,m.empno "mgr num",m.ename "Manager name"
+from emp e,emp m
+where e.mgr=m.empno
+
+select e.empno,e.ename,m.empno "mgr num",m.ename "Manager name"
+from emp e inner join emp m
+on e.mgr=m.empno
+
+
+
+room(rid,rname,rloc);
+course(cid,cname,nop,rid,fid)
+faculty(fid,fname,sp_sub)
+
+------list all romms which are empty
+select *
+from course c right outer join room r on c.rid=r.rid
+where c.cname is null
+
+------list all faculties not allocated to any course
+select *
+from course c right outer join faculty f on c.fid=f.fid
+where c.cname is null
+
+
+
+select *
+from faculty f
+where not exists (select *
+		from course c
+		where f.fid=c.fid
+
+
+---- list all courses for which no room is alloacted
+select *
+from course c
+where c.rid is null
+
+
+---- list all courses for which no faculty is allocated
+select *
+from course c
+where c.fid is null
+
+
+
+---list all courses along with faculty name allocated 
+to the course
+select *
+from course c inner join faculty f on c.fid=f.fid
+
+------list all courses along with roomname
+select *
+from course c inner join room r on c.rid=r.rid
+
+-------list all courses along with room name and faculty name
+
+select * 
+from course c inner join faculty f
+on c.fid=f.fid 
+inner join room r on c.rid=r.rid;
+
+
+create view myview_dac19
+    as
+    select empno,ename,deptno
+    from emp
+    where deptno=10
+    union
+    select empno,ename,deptno
+    from emp
+    where deptno=20;
+
+
+advantages
+---- security increases because table names are hidden
+---- complexity of queries can be hidden
+-----restricted access can be given to limited information
+
+
+
+
+
+
+Query 58:
+
+Select sal
+From emp
+Where ename='MILLER' and sal in
+(Select max(sal)
+From emp e ,salgrade s
+Where e.sal  between s.losal and s.hisal and grade in (Select grade
+From emp e ,salgrade s
+Where e.sal  between s.losal and s.hisal and e.ename='MILLER'))
+
+
+
+select e.ename, e.job, e.sal, e.deptno, d.dname, s.grade
+ from emp e, dept d, salgrade s
+ where (e.deptno=d.deptno) and (e.sal between s.losal and s.hisal) and (e.sal=5000 or e.job!='analyst')
+
+
+
+
+
+100 ----- programmers
+
+200 ----- analyst
+
+1000 ---- mangers
+5000 ---- director  ---user
+
+
+
+loops
+if
+procedure
+function
+triggers
+exception
+cursors
+
+
+product
+---increases security
+----reduces network traffic
+-----application developer need not spend time in 
+  learning and writing complicated
+
+
+3 types of parameters
+IN ----- to pass data to procedure or function as i/p
+   ------ these are nonmodifiable
+   ------ these are readonly
+   ------- default parameter type
+OUT ----- to give output to calling statement 
+    ----- these are write only
+INOUT  ------ these are read and write 
+       ----- passing data and inside procedure you can 
+          modify the values
+
+delimiter //
+create procedure myproc(in pdeptno int,out pcnt int)
+begin
+    set pcnt=30;
+    set pdetno=34; 
+    select count(*) into pcnt 
+    from emp
+    where deptno=pdeptno;
+end//
+
+delimiter ;
+
+call myproc(10,@cnt);
+
+
+----------
+delimiter //
+create procedure myproc(in pdeptno int)
+begin
+     select count(*) 
+    from emp
+    where deptno=pdeptno;
+end//
+
+delimiter ;
+
+
+--------
+drop procedure myproc;
+delimiter //
+create procedure myproc(in pempno int,out pename varchar(30),out pdeptno int)
+begin
+
+     select ename,deptno into  pename,pdeptno
+    from emp
+    where empno=pempno;
+end//
+
+delimiter ;
+
+
+
+------ if else 
+
+count number of employees from dept 10
+
+if < 5
+    too few employee
+>=5  and <= 12
+    midium number of employees
+otherwise
+    too many employees
+
+
+delimiter //
+create procedure empcntstatus(pdeptno int,out pstatus varchar(50))
+begin
+	declare vcnt int;
+	select count(*) into vcnt
+	from emp
+	where deptno=pdeptno;
+        if vcnt< 5 then
+           set pstatus="too few employees";
+        elseif vcnt<=12 then
+           set pstatus="medium number of employees";
+	else
+	   set pstatus="too many employees";
+	end if;
+        select pstatus;
+end//
+
+delimiter ;
+
+call empcntstatus(20,@status)
+
+delimiter //
+create procedure getStr1(pstart int,pend int)
+begin
+	declare x int;
+	declare str varchar(50);
+	set x=pstart;
+	set str="";
+	while x<=pend do
+           set str=concat(str,x,",");
+           set x=x+1;
+	end while;
+        select str;
+end//
+
+delimiter ;
+
+------
+write procedure to find sum of 10 numbers using loop
+
+delimiter //
+create procedure findsum(pstart int,pend int)
+begin
+	declare x int;
+	declare sum int;
+        set sum=0;
+        set x=pstart;
+        lable1: loop
+        if x>pend then
+            leave lable1;
+        end if;
+        set sum=sum+x;
+        set x=x+1;
+        iterate lable1;
+        end loop;
+        select sum;
+end//
+
+
+------ cursor
+---cursor is similar to array
+---you can navigate through cursor only once and 
+only in forward direction
+
+1. declare cursor
+2. declare continue handler for not found
+3. open cursor    -------- populate data in the cursor
+4. fetch data from cursor
+5. check cend is true if yes then stop loop
+6. process the data.
+7. reapeate steps 4,5,6
+8. close cursor
+
+delimiter //
+create procedure mysalsum()
+begin
+declare cend,sum int default 0;
+declare vsal int;
+declare empcur cursor for select sal from emp; 
+declare continue handler for NOT FOUND set cend=1;
+open empcur;
+lable1: loop
+    fetch empcur into vsal;
+    if cend=1 then
+       leave lable1;
+    end if;
+    if vsal > 2000 then
+       set sum=sum+vsal;
+    end if;
+end loop;
+select sum;
+close empcur;
+end//
+delimiter ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

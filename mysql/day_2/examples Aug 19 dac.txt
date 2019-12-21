@@ -1,0 +1,253 @@
+-------list all employees whose sal > 1600 and < 3000
+select *
+from emp
+where sal> 1600 and sal <3000;
+
+
+between and
+
+select *
+from emp
+where sal between 1601 and 2999;
+
+-----list all employee with sal  not greater than or equal to 1600
+and less than or equal to 3000
+select *
+from emp
+where sal not between 1600 and 3000;
+
+
+-----list all employees with salary  either 1600 or 2500 or 2100
+
+select * 
+from emp
+where sal=1600 or sal=2500 or sal=2100;
+
+in operator
+
+select * 
+from emp
+where sal in (1600,2500,2100);
+
+
+-----list all employees who are working as MANAGER or CLERK
+or ANALYST
+select * 
+from emp
+where job in ('MANAGER','CLERK','ANALYST');
+
+------list all employees with name starts with M
+select *
+from emp
+where ename like 'M%';
+
+% - 0  or more characters
+_ - matches with one character
+
+------list all employees whose name contains  M somewhere in the name
+
+select *
+from emp
+where ename like '%M%';
+
+------list all employees whose name contains  M at second position
+
+select *
+from emp
+where ename like '_M%';
+
+----list all employees whose name contains  M at second last 
+position
+select *
+from emp
+where ename like '%M_';
+
+----list all employees whose name starts with M or A or k 
+select *
+from emp
+where ename not like 'M%' or ename like'A%' or ename like'K%'
+
+select *
+from emp
+where ename REGEXP '^M|^A|^K'
+
+
+REGEXP
+^ --- starts with
+$ --- ends with
+. ---- matches any one character
+[] --- matches one character from the given set  
+* ----- 0 or more occurances
++ ------ 1 or more occurances
+? ----- 0 or 1 occurrances
+
+A%
+
+'^A'
+A
+A1
+A!
+Ajashhjfhsjfhjsh
+CAnsdskjdsjk
+
+'A$'
+A
+kjhfhsA
+1A
+jahsdjh
+
+'^..A$'
+
+asdjahsjhajdhA
+asA
+^A[aeiou]..B$
+
+AesdB
+
+^ac?.D$
+
+abD
+acfD
+
+(^a..S$|^B.S|^RB.+)
+
+select *
+from emp
+where ename REGEXP '^A..B$'
+
+^A[^aeiou].F$
+
+[^A-Za-z0-9]
+
+
+------ list all employees in sorted order of sal who works as Manager
+
+select *
+from emp
+where job='MANAGER'
+order by sal;
+
+
+-------------------
+----- list all employees with name "jones' and salry >1500   100000 20000  5 
+select *
+from emp
+where ename='JONES' and sal>1500;
+
+select *
+from emp
+where sal>1500 and ename='JONES'
+
+-----find sum of sal for all managers in for each department
+
+select deptno,sum(sal)
+from emp
+where job='MANAGER'
+group by deptno;
+
+--------find sum of sal for all employees with sal equal to 1600,2500,2100
+
+select sum(sal)
+from emp
+where sal in (1600,2500,2100);
+
+
+-------find avg of sal for each department for each job
+
+select deptno,job,avg(sal)
+from emp
+group by deptno,job;
+
+
+select deptno,count(*)
+from emp
+group by deptno
+having count(*)>15;
+
+-----list sum of sal,and count department wise and  jobwise if 
+sum(sal)>15000 and count>3
+
+select deptno,job,sum(sal),count(*)
+from emp
+group by deptno,job
+having sum(sal)>15000 and count(*) >3;
+
+-----list sum of sal, max sal,count for each job for all employees who are in
+department 20 or 30 and they earn commission if count > 5
+select job,sum(sal),max(sal),count(comm)
+from emp
+where deptno in (20,30) and comm is not null
+group by job
+having count(*)>5 
+order by sum(sal)
+
+
+select deptno,count(*)
+from emp
+where deptno=10
+group by deptno;
+
+
+---list sum of sal,min sal,max sal and number of employees 
+  working under same manager with salary >2000
+only if number of employees are < 7
+
+select mgr,sum(sal),min(sal),max(sal),count(*)
+from emp
+where sal>200
+group by mgr
+having count(*)<7;
+
+
+Number functions
+ifnull
+ceil
+floor
+round
+truncate
+abs
+sqrt
+
+string related function
+concat
+INSTR
+lower
+upper
+LPAD
+trim
+insert
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
